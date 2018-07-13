@@ -1,13 +1,14 @@
 package pgp
 
 import (
-	"golang.org/x/crypto/openpgp"
 	"bytes"
-	"fmt"
-	"io"
-	"golang.org/x/crypto/openpgp/armor"
 	"compress/gzip"
 	_ "crypto/sha256"
+	"fmt"
+	"io"
+
+	"golang.org/x/crypto/openpgp"
+	"golang.org/x/crypto/openpgp/armor"
 	_ "golang.org/x/crypto/ripemd160"
 )
 
@@ -28,7 +29,7 @@ func Encrypt(entity *openpgp.Entity, message []byte) ([]byte, error) {
 	}
 
 	// Create compressor with encryptor
-	compressorWriter, err := gzip.NewWriterLevel(encryptorWriter, gzip.BestCompression)
+	compressorWriter, err := gzip.NewWriter(encryptorWriter)
 	if err != nil {
 		return []byte{}, fmt.Errorf("Invalid compression level: %v", err)
 	}
