@@ -1,8 +1,8 @@
 package pgp
 
 import (
+	"archive/zip"
 	"bytes"
-	"compress/gzip"
 	_ "crypto/sha256"
 	"fmt"
 	"io"
@@ -29,10 +29,7 @@ func Encrypt(entity *openpgp.Entity, message []byte) ([]byte, error) {
 	}
 
 	// Create compressor with encryptor
-	compressorWriter, err := gzip.NewWriter(encryptorWriter)
-	if err != nil {
-		return []byte{}, fmt.Errorf("Invalid compression level: %v", err)
-	}
+	compressorWriter := zip.NewWriter(encryptorWriter)
 
 	// Write message to compressor
 	messageReader := bytes.NewReader(message)
